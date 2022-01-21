@@ -1,6 +1,8 @@
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import Image from "react-bootstrap/Image";
+import { useDispatch } from 'react-redux'
+import { removeProduct, clearCart } from '../../redux/actions/cartActions'
 
 const styles = {
   Image: {
@@ -35,6 +37,15 @@ const styles = {
 
 export default function Cart({products, cartMethods, finished, disable}) {
 
+  const dispatch = useDispatch()
+
+  const clearRedux = () => {
+    dispatch(clearCart())
+  }
+  const removeRedux = (id) => {
+    dispatch(removeProduct( id ))
+  }
+
   const {remove, clear, total, increaseQuantity, decreaseQuantity} =
     cartMethods;
 
@@ -67,6 +78,9 @@ export default function Cart({products, cartMethods, finished, disable}) {
         {!finished&&<td>
           <Button style={styles.SmallButton} onClick={() => remove(item.id, item?.option)} disabled={disable}>
             Borrar
+          </Button>
+          <Button style={styles.SmallButton} onClick={() => removeRedux(item.id)} disabled={disable}>
+            Borrar Redux
           </Button>
         </td>}
       </tr>
@@ -103,8 +117,12 @@ export default function Cart({products, cartMethods, finished, disable}) {
             <td style={styles.Total}>Total:</td>
             <td style={styles.Total}>${total()}</td>
             {!finished&&<td>
+            
               <Button style={styles.SmallButton} onClick={clear} disabled={disable}>
                 Vaciar Carrito
+              </Button>
+              <Button style={styles.SmallButton} onClick={()=>clearRedux("aa")} disabled={disable}>
+                Vaciar Redux
               </Button>
             </td>}
           </tr>

@@ -1,7 +1,7 @@
 import Button from "react-bootstrap/Button";
 import {useState} from "react";
 import { useDispatch } from 'react-redux'
-import { addProduct } from '../../redux/actions'
+import { addProduct } from '../../redux/actions/cartActions'
 
 
 
@@ -29,7 +29,7 @@ export default function ItemCount({
   const dispatch = useDispatch()
 
   const handleAddRedux = (id) => {
-    dispatch(addProduct({ text: id }))
+    dispatch(addProduct( quantity, id ))
   }
 
   return (
