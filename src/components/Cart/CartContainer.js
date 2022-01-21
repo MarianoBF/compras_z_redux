@@ -6,6 +6,10 @@ import { useHistory } from "react-router-dom";
 import BuyForm from "./BuyForm";
 import Alert from "react-bootstrap/Alert";
 import { Link } from "react-router-dom";
+import { useDispatch } from 'react-redux'
+import { getCart } from '../../redux/actions/cartActions'
+import { useSelector } from 'react-redux'
+
 
 export default function CartContainer({ user }) {
   const cart = useCart();
@@ -17,7 +21,12 @@ export default function CartContainer({ user }) {
   const [stockErrorMessage, setStockErrorMessage] = useState([]);
   const [disable, setDisable] = useState(false);
 
+  const dispatch = useDispatch()
+
+  const productsToShow = useSelector(state => state.cart)
+
   useEffect(() => {
+
     return () => {
       if (finishedOrder) {
         cart.clear();
@@ -129,7 +138,7 @@ export default function CartContainer({ user }) {
         <>
           {" "}
           <Cart
-            products={cart.cartProducts}
+            products={productsToShow}
             cartMethods={cartMethods}
             finished={finishedOrder}
             disable={checkingStock}

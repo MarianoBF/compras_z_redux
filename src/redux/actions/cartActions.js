@@ -18,4 +18,10 @@ function clearCart() {
     }
 }
 
-export { addProduct, removeProduct, clearCart }
+function getCart() {
+    return {
+        type: "LIST_PRODUCTS",
+    }
+}
+
+export { addProduct, removeProduct, clearCart, getCart }

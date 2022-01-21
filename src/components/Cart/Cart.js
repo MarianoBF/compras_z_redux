@@ -52,7 +52,7 @@ export default function Cart({products, cartMethods, finished, disable}) {
   const productsInCart = products.map(item => {
     return (
       <tr key={item?.option?.value?item.id+item.option.value:item.id}>
-        <td>
+        {/* <td>
           <Image style={styles.Image} src={item.image} rounded />
         </td>
         <td>{item.name}</td>
@@ -71,10 +71,10 @@ export default function Cart({products, cartMethods, finished, disable}) {
             +
           </Button>}
           </div>
-        </td>
-        <td>{item.option.name ? item.option.name + ": " + item.option.value : "N/A" }</td>
-        <td>${item.price}</td>
-        <td>${item.price * item.quantity}</td>
+        </td> */}
+        {/* <td>{item.option.name ? item.option.name + ": " + item.option.value : "N/A" }</td> */}
+        <td>id{item.id} quantity{item.quantity}</td>
+        {/* <td>${item.price * item.quantity}</td> */}
         {!finished&&<td>
           <Button style={styles.SmallButton} onClick={() => remove(item.id, item?.option)} disabled={disable}>
             Borrar
