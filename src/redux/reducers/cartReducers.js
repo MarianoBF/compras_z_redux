@@ -1,18 +1,34 @@
 import { combineReducers } from "redux";
 
-const cartReducer = (state = [], action) => {
+const initialState = {
+  allProducts: [],
+  cartProducts: [],
+};
+
+const cartReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "LIST_PRODUCTS":
-      return state;
     case "ADD_PRODUCT":
-      return [
+      return {
         ...state,
-        { quantity: action.payload.quantity, id: action.payload.id },
-      ];
+        cartProducts: [
+          ...state.cartProducts,
+          { quantity: action.payload.quantity, id: action.payload.id },
+        ],
+      };
     case "REMOVE_PRODUCT":
-      return [...state.filter(item=>item.id !== action.payload.id)];
+      return {
+        ...state,
+        cartProducts: [
+          ...state.cartProducts.filter((item) => item.id !== action.payload.id),
+        ],
+      };
     case "CLEAR_PRODUCTS":
-        return [];
+      return initialState;
+    case "GET_INITIAL_PRODUCTS":
+      return {
+        ...state,
+        allProducts: [...action.payload],
+      };
     default:
       return state;
   }

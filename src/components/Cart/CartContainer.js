@@ -23,7 +23,7 @@ export default function CartContainer({ user }) {
 
   const dispatch = useDispatch()
 
-  const productsToShow = useSelector(state => state.cart)
+  const productsToShow = useSelector(state => state.cart.cartProducts)
 
   useEffect(() => {
 

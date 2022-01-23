@@ -28,7 +28,7 @@ export default function ItemCount({
   };
   const dispatch = useDispatch()
 
-  const handleAddRedux = (id) => {
+  const handleAddRedux = (quantity, id) => {
     dispatch(addProduct( quantity, id ))
   }
 
@@ -52,7 +52,7 @@ export default function ItemCount({
           </Button>
           <Button
             className="spacedButton"
-            onClick={() => handleAddRedux(id)}>
+            onClick={() => handleAddRedux(quantity, id)}>
             Agregar al Carrito Redux
           </Button>
         </>
