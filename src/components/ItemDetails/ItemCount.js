@@ -1,9 +1,5 @@
 import Button from "react-bootstrap/Button";
-import {useState} from "react";
-import { useDispatch } from 'react-redux'
-import { addProduct } from '../../redux/actions/cartActions'
-
-
+import { useState } from "react";
 
 export default function ItemCount({
   stock,
@@ -17,20 +13,15 @@ export default function ItemCount({
 
   const handleMore = () => {
     if (quantity < stock) {
-      setQuantity(quantity => quantity + 1);
+      setQuantity((quantity) => quantity + 1);
     }
   };
 
   const handleLess = () => {
     if (quantity > 1) {
-      setQuantity(quantity => quantity - 1);
+      setQuantity((quantity) => quantity - 1);
     }
   };
-  const dispatch = useDispatch()
-
-  const handleAddRedux = (quantity, id) => {
-    dispatch(addProduct( quantity, id ))
-  }
 
   return (
     <>
@@ -47,13 +38,9 @@ export default function ItemCount({
           </Button>{" "}
           <Button
             className="spacedButton"
-            onClick={() => handleAdd(quantity, id)}>
+            onClick={() => handleAdd(quantity, id)}
+          >
             Agregar al Carrito
-          </Button>
-          <Button
-            className="spacedButton"
-            onClick={() => handleAddRedux(quantity, id)}>
-            Agregar al Carrito Redux
           </Button>
         </>
       )}

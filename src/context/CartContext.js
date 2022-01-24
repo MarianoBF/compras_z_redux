@@ -44,55 +44,6 @@ export const CartProvider = ({ children }) => {
     }
   }
 
-  const addItem = (quantity, product_id, option) => {
-    const filtered = cartProducts.filter((item) => item.id === product_id);
-    if (
-      filtered.length === 0 ||
-      (option && filtered[0].option.value !== option)
-    ) {
-      const retrieveProduct = allProducts.filter(
-        (item) => item.id === product_id
-      );
-      const newCart = [
-        ...cartProducts,
-        {
-          id: product_id,
-          quantity,
-          option,
-          name: retrieveProduct[0].name,
-          price: retrieveProduct[0].price,
-          stock: retrieveProduct[0].stock,
-          image: retrieveProduct[0].image,
-        },
-      ];
-      newCart.sort((a, b) => (a.name > b.name ? 1 : -1));
-      setCartProducts(newCart);
-      localStorage.setItem("compras_z_cart", JSON.stringify(newCart));
-    }
-  };
-
-  const removeItem = (product_id, option) => {
-    let filtered;
-    if (option) {
-      const otherOptions = cartProducts
-        .filter((item) => item.id === product_id)
-        .filter((item) => item.option.value !== option.value);
-      const otherProds = cartProducts.filter((item) => item.id !== product_id);
-      filtered = [...otherProds, ...otherOptions];
-    } else {
-      filtered = cartProducts.filter((item) => item.id !== product_id);
-    }
-    filtered.sort((a, b) => (a.name > b.name ? 1 : -1));
-    setCartProducts(filtered);
-    localStorage.setItem("compras_z_cart", JSON.stringify(filtered));
-  };
-
-  const clear = () => {
-    setCartProducts([]);
-    setOrderID("");
-    localStorage.setItem("compras_z_cart", []);
-  };
-
   const clearFromLocalStorage = () => {
     localStorage.setItem("compras_z_cart", []);
   };
@@ -275,9 +226,6 @@ export const CartProvider = ({ children }) => {
     <CartContext.Provider
       value={{
         cartProducts,
-        addItem,
-        removeItem,
-        clear,
         isInCart,
         isOptionInCart,
         getTotalNumberOfItems,

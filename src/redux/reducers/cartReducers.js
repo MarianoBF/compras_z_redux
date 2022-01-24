@@ -8,12 +8,22 @@ const initialState = {
 const cartReducer = (state = initialState, action) => {
   switch (action.type) {
     case "ADD_PRODUCT":
+      const retrieveProduct = state.allProducts.filter(
+        (item) => item.id === action.payload.id
+      );
       return {
         ...state,
         cartProducts: [
           ...state.cartProducts,
-          { quantity: action.payload.quantity, id: action.payload.id },
-        ],
+          {
+            quantity: action.payload.quantity,
+            id: action.payload.id,
+            name: retrieveProduct[0].name,
+            price: retrieveProduct[0].price,
+            stock: retrieveProduct[0].stock,
+            image: retrieveProduct[0].image,
+          },
+        ].sort((a, b) => (a.name > b.name ? 1 : -1)),
       };
     case "REMOVE_PRODUCT":
       return {

@@ -6,6 +6,8 @@ import {useCart} from "../../context/CartContext";
 import useMounted from "../../hooks/useMounted";
 import {useHistory} from "react-router-dom";
 import {useProducts} from "../../context/ProductsContext";
+import { addProduct } from '../../redux/actions/cartActions'
+import { useDispatch } from 'react-redux'
 
 export default function ItemListContainer() {
   const cart = useCart();
@@ -43,8 +45,10 @@ export default function ItemListContainer() {
     //eslint-disable-next-line
   }, [id_product,isMounted, prods, wait]);
 
+  const dispatch = useDispatch()
+
   const addToCart = (quantity, id, option) => {
-    cart.addItem(quantity, id, option);
+    dispatch(addProduct( quantity, id ))
   };
 
   const [optionInCart, setOptionInCart] = useState(false);

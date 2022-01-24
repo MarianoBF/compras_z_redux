@@ -111,7 +111,6 @@ export default function CartContainer({ user }) {
 
   const cartMethods = {
     clear: cart.clear,
-    remove: cart.removeItem,
     total: cart.getTotalPrice,
     increaseQuantity: cart.increaseQuantity,
     decreaseQuantity: cart.decreaseQuantity,
