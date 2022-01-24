@@ -35,14 +35,8 @@ const styles = {
   },
 };
 
-export default function ItemDetails({
-  item,
-  addToCart,
-  inCart,
-  isOptionInCart,
-  optionInCart,
-}) {
-  const { name, description, image, price, stock, id, options } = item;
+export default function ItemDetails({ item, addToCart, inCart }) {
+  const { name, description, image, price, stock, id } = item;
   const history = useHistory();
 
   const [inCartFlag, setInCartFlag] = useState(false);
@@ -51,25 +45,7 @@ export default function ItemDetails({
   const handleAdd = (quantity, product_id) => {
     setShowBuy(true);
     setInCartFlag(true);
-    addToCart(quantity, product_id, option);
-    if (option?.name) {
-      isOptionInCart(product_id, option.name);
-    }
-  };
-
-  const optionsList = options
-    ? options.values.map((item) => <option key={item}>{item}</option>)
-    : "";
-
-  const [option, setOption] = useState({
-    name: options?.name,
-    value: options?.values[0],
-  });
-
-  const handleSelectOption = (e) => {
-    setInCartFlag(false);
-    setOption({ name: options.name, value: e.target.value });
-    isOptionInCart(id, e.target.value);
+    addToCart(quantity, product_id);
   };
 
   return (
@@ -85,17 +61,10 @@ export default function ItemDetails({
           <Card.Title>{name}</Card.Title>
           <Card.Text>{"$" + price}</Card.Text>
           <Card.Text>{description}</Card.Text>
-          {inCart && !options ? (
+          {inCart ? (
             <Link to="/cart">
               <Button className="spacedButton">
                 Producto seleccionado, ir al carrito
-              </Button>
-            </Link>
-          ) : optionInCart || inCartFlag ? (
-            <Link to="/cart">
-              <Button className="spacedButton">
-                Opción ya seleccionada, ir al carrito (o elegí otra opción para
-                agregarla)
               </Button>
             </Link>
           ) : stock > 0 ? (
@@ -105,24 +74,11 @@ export default function ItemDetails({
                 id={id}
                 handleAdd={handleAdd}
                 showBuy={showBuy}
-                optionInCart={optionInCart}
               />
             </>
           ) : (
             <Card.Text style={styles.NoStock}>
               Lo sentimos, no hay stock disponible de este artículo
-            </Card.Text>
-          )}
-          {options && (
-            <Card.Text>
-              {options.name + ": "}
-              <Form.Control
-                as="select"
-                value={option.value}
-                onChange={handleSelectOption}
-              >
-                {optionsList}
-              </Form.Control>
             </Card.Text>
           )}
           <Card.Text>
@@ -131,7 +87,7 @@ export default function ItemDetails({
             </Button>
           </Card.Text>
         </Card.Body>
-        {(!showBuy || !optionInCart) && stock > 0 && (
+        {!showBuy && stock > 0 && (
           <Card.Footer>{stock} unidades disponibles</Card.Footer>
         )}
       </Card>

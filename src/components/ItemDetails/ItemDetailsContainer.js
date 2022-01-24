@@ -37,9 +37,6 @@ export default function ItemListContainer() {
       }, 2000);
     } else if (isMounted.current) {
       setProduct(currentProduct);
-      if (currentProduct.options) {
-        isOptionInCart(currentProduct.id, currentProduct?.options?.values[0]);
-      }
       setIsLoading(false);
     }
     //eslint-disable-next-line
@@ -49,12 +46,6 @@ export default function ItemListContainer() {
 
   const addToCart = (quantity, id) => {
     dispatch(addProduct( quantity, id ))
-  };
-
-  const [optionInCart, setOptionInCart] = useState(false);
-
-  const isOptionInCart = (id, option) => {
-    setOptionInCart(cart.isOptionInCart(id, option));
   };
 
   if (isLoading || wait) {
@@ -82,8 +73,6 @@ export default function ItemListContainer() {
         item={product}
         addToCart={addToCart}
         inCart={inCart}
-        isOptionInCart={isOptionInCart}
-        optionInCart={optionInCart}
       />
     </>
   );

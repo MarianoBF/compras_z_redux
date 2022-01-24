@@ -77,8 +77,8 @@ export default function OrdersDetails({ email }) {
           <hr />
           <Card.Text>Items: </Card.Text>
           {order.details.items.map((item) => (
-            <Card.Text key={item.id + item.option}>
-              {item.title} {item.option.name} {item.option.value} -{" "}
+            <Card.Text key={item.id}>
+              {item.title} - {" "}
               {item.quantity} unidades
             </Card.Text>
           ))}

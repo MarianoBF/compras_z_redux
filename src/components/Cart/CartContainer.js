@@ -92,7 +92,6 @@ export default function CartContainer({ user }) {
       price: item.price,
       quantity: item.quantity,
       stock: item.stock,
-      option: item.option.name ? item.option : "N/A",
     }));
     const order = {
       buyer: {

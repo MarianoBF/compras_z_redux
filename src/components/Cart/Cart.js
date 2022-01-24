@@ -51,7 +51,7 @@ export default function Cart({products, cartMethods, finished, disable, total}) 
 
   const productsInCart = products.map(item => {
     return (
-      <tr key={item?.option?.value?item.id+item.option.value:item.id}>
+      <tr key={item.id}>
         <td>
           <Image style={styles.Image} src={item.image} rounded />
         </td>
@@ -60,13 +60,13 @@ export default function Cart({products, cartMethods, finished, disable, total}) 
         <div className="container-fluid d-flex justify-content-center align-items-center">
         {!finished&&
           <Button
-            onClick={() => decreaseQuantity(item.id, item?.option)}
+            onClick={() => decreaseQuantity(item.id)}
             style={styles.SmallButton} disabled={disable}>
             -
           </Button>}
           <p style={styles.Quantity}>{item.quantity}</p>{!finished&&
           <Button
-            onClick={() => increaseQuantity(item.id, item?.option)}
+            onClick={() => increaseQuantity(item.id)}
             style={styles.SmallButton} disabled={disable}>
             +
           </Button>}
