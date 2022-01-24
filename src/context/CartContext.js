@@ -119,18 +119,6 @@ export const CartProvider = ({ children }) => {
     return match.length > 0;
   };
 
-  const getTotalNumberOfItems = () => {
-    const reducer = (prev, cur) => prev + cur.quantity;
-    const totalItems = cartProducts.reduce(reducer, 0);
-    return totalItems;
-  };
-
-  const getTotalPrice = () => {
-    const reducer = (prev, cur) => prev + cur.quantity * cur.price;
-    const totalPrice = cartProducts.reduce(reducer, 0);
-    return totalPrice;
-  };
-
   const increaseQuantity = (product_id, option) => {
     let position;
     const newProducts = [...cartProducts];
@@ -228,8 +216,6 @@ export const CartProvider = ({ children }) => {
         cartProducts,
         isInCart,
         isOptionInCart,
-        getTotalNumberOfItems,
-        getTotalPrice,
         increaseQuantity,
         decreaseQuantity,
         checkStock,

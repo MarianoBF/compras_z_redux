@@ -1,5 +1,5 @@
-import {Cart} from "react-bootstrap-icons";
-import {useCart} from "../../context/CartContext";
+import { Cart } from "react-bootstrap-icons";
+import { useSelector } from "react-redux";
 
 const styles = {
   div: {
@@ -15,9 +15,11 @@ const styles = {
 };
 
 export default function CartWidget() {
-  const cart = useCart();
-
-  const NumberOfItems = cart.getTotalNumberOfItems();
+  const itemsReducer = (prev, cur) => prev + cur.quantity;
+  const NumberOfItems = useSelector((state) => state.cart.cartProducts).reduce(
+    itemsReducer,
+    0
+  );
 
   return (
     <div style={styles.div}>

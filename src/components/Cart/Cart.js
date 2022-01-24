@@ -35,7 +35,7 @@ const styles = {
   }
 };
 
-export default function Cart({products, cartMethods, finished, disable}) {
+export default function Cart({products, cartMethods, finished, disable, total}) {
 
   const dispatch = useDispatch()
 
@@ -46,7 +46,7 @@ export default function Cart({products, cartMethods, finished, disable}) {
     dispatch(removeProduct( id ))
   }
 
-  const {total, increaseQuantity, decreaseQuantity} =
+  const {increaseQuantity, decreaseQuantity} =
     cartMethods;
 
   const productsInCart = products.map(item => {
@@ -109,7 +109,7 @@ export default function Cart({products, cartMethods, finished, disable}) {
             <td></td>
             <td></td>
             <td style={styles.Total}>Total:</td>
-            <td style={styles.Total}>${total()}</td>
+            <td style={styles.Total}>${total}</td>
             {!finished&&<td>
             
               <Button style={styles.SmallButton} onClick={()=>clearRedux("aa")} disabled={disable}>

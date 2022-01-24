@@ -7,7 +7,6 @@ import BuyForm from "./BuyForm";
 import Alert from "react-bootstrap/Alert";
 import { Link } from "react-router-dom";
 import { useDispatch } from 'react-redux'
-import { getCart } from '../../redux/actions/cartActions'
 import { useSelector } from 'react-redux'
 
 
@@ -24,6 +23,9 @@ export default function CartContainer({ user }) {
   const dispatch = useDispatch()
 
   const productsToShow = useSelector(state => state.cart.cartProducts)
+
+  const priceReducer = (prev, cur) => prev + cur.quantity * cur.price;
+  const total =  useSelector(state => state.cart.cartProducts).reduce(priceReducer, 0);
 
   useEffect(() => {
 
@@ -102,7 +104,7 @@ export default function CartContainer({ user }) {
       },
       items: [...orderedProducts],
       date: new Date(),
-      total: cart.getTotalPrice(),
+      total,
     };
     cart.saveOrder(order);
     setFinishedOrder(true);
@@ -110,8 +112,6 @@ export default function CartContainer({ user }) {
   };
 
   const cartMethods = {
-    clear: cart.clear,
-    total: cart.getTotalPrice,
     increaseQuantity: cart.increaseQuantity,
     decreaseQuantity: cart.decreaseQuantity,
   };
@@ -137,6 +137,7 @@ export default function CartContainer({ user }) {
         <>
           {" "}
           <Cart
+            total={total}
             products={productsToShow}
             cartMethods={cartMethods}
             finished={finishedOrder}

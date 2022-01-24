@@ -47,7 +47,7 @@ export default function ItemListContainer() {
 
   const dispatch = useDispatch()
 
-  const addToCart = (quantity, id, option) => {
+  const addToCart = (quantity, id) => {
     dispatch(addProduct( quantity, id ))
   };
 
