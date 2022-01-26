@@ -113,44 +113,6 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  const isOptionInCart = (product_id, option) => {
-    const product = cartProducts.filter((item) => +item.id === +product_id);
-    const match = product.filter((item) => item.option.value === option);
-    return match.length > 0;
-  };
-
-  const increaseQuantity = (product_id, option) => {
-    let position;
-    const newProducts = [...cartProducts];
-    if (option?.name) {
-      position = newProducts.findIndex(
-        (item) => item.option.value === option.value && +item.id === +product_id
-      );
-    } else {
-      position = cartProducts.findIndex((item) => +item.id === +product_id);
-    }
-    if (newProducts[position].quantity <= newProducts[position].stock) {
-      newProducts[position].quantity++;
-      setCartProducts(newProducts);
-    }
-  };
-
-  const decreaseQuantity = (product_id, option) => {
-    let position;
-    const newProducts = [...cartProducts];
-    if (option?.name) {
-      position = newProducts.findIndex(
-        (item) => item.option.value === option.value && +item.id === +product_id
-      );
-    } else {
-      position = cartProducts.findIndex((item) => +item.id === +product_id);
-    }
-    if (newProducts[position].quantity >= 2) {
-      newProducts[position].quantity--;
-      setCartProducts(newProducts);
-    }
-  };
-
   const [orderID, setOrderID] = useState(null);
 
   const getOrderID = () => {
@@ -215,9 +177,6 @@ export const CartProvider = ({ children }) => {
       value={{
         cartProducts,
         isInCart,
-        isOptionInCart,
-        increaseQuantity,
-        decreaseQuantity,
         checkStock,
         saveOrder,
         getOrderID,

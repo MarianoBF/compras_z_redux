@@ -1,8 +1,13 @@
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import Image from "react-bootstrap/Image";
-import { useDispatch } from 'react-redux'
-import { removeProduct, clearCart } from '../../redux/actions/cartActions'
+import { useDispatch } from "react-redux";
+import {
+  removeProduct,
+  clearCart,
+  decreaseProductQuantity,
+  increaseProductQuantity,
+} from "../../redux/actions/cartActions";
 
 const styles = {
   Image: {
@@ -32,24 +37,32 @@ const styles = {
   },
   Quantity: {
     margin: "0 10px",
-  }
+  },
 };
 
-export default function Cart({products, cartMethods, finished, disable, total}) {
-
-  const dispatch = useDispatch()
+export default function Cart({
+  products,
+  cartMethods,
+  finished,
+  disable,
+  total,
+}) {
+  const dispatch = useDispatch();
 
   const clearRedux = () => {
-    dispatch(clearCart())
-  }
+    dispatch(clearCart());
+  };
   const removeRedux = (id) => {
-    dispatch(removeProduct( id ))
-  }
+    dispatch(removeProduct(id));
+  };
+  const handleDecrease = (id) => {
+    dispatch(decreaseProductQuantity(id));
+  };
+  const handleIncrease = (id) => {
+    dispatch(increaseProductQuantity(id));
+  };
 
-  const {increaseQuantity, decreaseQuantity} =
-    cartMethods;
-
-  const productsInCart = products.map(item => {
+  const productsInCart = products.map((item) => {
     return (
       <tr key={item.id}>
         <td>
@@ -57,28 +70,41 @@ export default function Cart({products, cartMethods, finished, disable, total}) 
         </td>
         <td>{item.name}</td>
         <td>
-        <div className="container-fluid d-flex justify-content-center align-items-center">
-        {!finished&&
-          <Button
-            onClick={() => decreaseQuantity(item.id)}
-            style={styles.SmallButton} disabled={disable}>
-            -
-          </Button>}
-          <p style={styles.Quantity}>{item.quantity}</p>{!finished&&
-          <Button
-            onClick={() => increaseQuantity(item.id)}
-            style={styles.SmallButton} disabled={disable}>
-            +
-          </Button>}
+          <div className="container-fluid d-flex justify-content-center align-items-center">
+            {!finished && (
+              <Button
+                onClick={() => handleDecrease(item.id)}
+                style={styles.SmallButton}
+                disabled={disable}
+              >
+                -
+              </Button>
+            )}
+            <p style={styles.Quantity}>{item.quantity}</p>
+            {!finished && (
+              <Button
+                onClick={() => handleIncrease(item.id)}
+                style={styles.SmallButton}
+                disabled={disable}
+              >
+                +
+              </Button>
+            )}
           </div>
         </td>
         <td>${item.price}</td>
         <td>${item.price * item.quantity}</td>
-        {!finished&&<td>
-          <Button style={styles.SmallButton} onClick={() => removeRedux(item.id)} disabled={disable}>
-            Borrar
-          </Button>
-        </td>}
+        {!finished && (
+          <td>
+            <Button
+              style={styles.SmallButton}
+              onClick={() => removeRedux(item.id)}
+              disabled={disable}
+            >
+              Borrar
+            </Button>
+          </td>
+        )}
       </tr>
     );
   });
@@ -99,7 +125,7 @@ export default function Cart({products, cartMethods, finished, disable, total}) 
             <th>Cantidad</th>
             <th>Precio unitario</th>
             <th>Precio total</th>
-            {!finished&&<th>Borrar producto</th>}
+            {!finished && <th>Borrar producto</th>}
           </tr>
         </thead>
         <tbody>{productsInCart}</tbody>
@@ -110,12 +136,17 @@ export default function Cart({products, cartMethods, finished, disable, total}) 
             <td></td>
             <td style={styles.Total}>Total:</td>
             <td style={styles.Total}>${total}</td>
-            {!finished&&<td>
-            
-              <Button style={styles.SmallButton} onClick={()=>clearRedux("aa")} disabled={disable}>
-                Vaciar Carrito
-              </Button>
-            </td>}
+            {!finished && (
+              <td>
+                <Button
+                  style={styles.SmallButton}
+                  onClick={() => clearRedux("aa")}
+                  disabled={disable}
+                >
+                  Vaciar Carrito
+                </Button>
+              </td>
+            )}
           </tr>
         </tfoot>
       </Table>

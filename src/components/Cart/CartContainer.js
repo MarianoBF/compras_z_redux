@@ -110,11 +110,6 @@ export default function CartContainer({ user }) {
     setShowForm(false);
   };
 
-  const cartMethods = {
-    increaseQuantity: cart.increaseQuantity,
-    decreaseQuantity: cart.decreaseQuantity,
-  };
-
   return (
     <div className="centered">
       <Alert show={finishedOrder} variant="success">
@@ -138,7 +133,6 @@ export default function CartContainer({ user }) {
           <Cart
             total={total}
             products={productsToShow}
-            cartMethods={cartMethods}
             finished={finishedOrder}
             disable={checkingStock}
           />

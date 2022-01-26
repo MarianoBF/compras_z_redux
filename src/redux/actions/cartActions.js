@@ -14,6 +14,20 @@ function removeProduct(id) {
   };
 }
 
+function increaseProductQuantity(id) {
+  return {
+    type: "INCREASE_PRODUCT_QUANTITY",
+    payload: { id },
+  };
+}
+
+function decreaseProductQuantity(id) {
+  return {
+    type: "DECREASE_PRODUCT_QUANTITY",
+    payload: { id },
+  };
+}
+
 function clearCart() {
   return {
     type: "CLEAR_PRODUCTS",
@@ -44,4 +58,4 @@ const fetchProducts = () => {
   };
 };
 
-export { addProduct, removeProduct, clearCart, fetchProducts };
+export { addProduct, removeProduct, clearCart, fetchProducts, increaseProductQuantity, decreaseProductQuantity };
