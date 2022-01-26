@@ -19,11 +19,7 @@ export default function ItemListContainer() {
   const prods = useProducts();
   const cartProducts = useSelector((state) => state.cart.cartProducts);
 
-  console.log("aaa", cartProducts.filter((item) => +item.id === +1).length);
-
-  // const inCart = cart.isInCart(id_product);
   const inCart = () => {
-    console.log("aa");
     return cartProducts.filter((item) => +item.id === +id_product).length > 0;
   };
 

@@ -1,23 +1,27 @@
+import { getFirestore } from "../../firebase";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { useOrders } from "../../context/OrdersContext";
 import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 import Spinner from "react-bootstrap/Spinner";
 
 export default function OrdersDetails({ email }) {
   const { id_order } = useParams();
-  const orders = useOrders();
+  // const orders = useOrders();
   const [order, setOrder] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const retrievedOrder = orders.getOrderById(id_order);
-    if (retrievedOrder) {
-      setOrder(retrievedOrder);
-      setIsLoading(false);
-    }
-  }, [id_order, orders]);
+    const db = getFirestore();
+    const itemCollection = db.collection("orders").doc(id_order);
+    itemCollection
+      .get()
+      .then((data) => {
+        setOrder(data.data());
+        setIsLoading(false);
+      })
+      .catch((error) => console.log(error));
+  }, [id_order, email]);
 
   const styles = {
     Container: {
@@ -59,13 +63,13 @@ export default function OrdersDetails({ email }) {
       <Card style={styles.Card}>
         <Card.Body style={styles.CardBody}>
           <Card.Title>Orden: {order.id}</Card.Title>
-          {email === order.details.buyer.email ? (
+          {email === order.buyer.email ? (
             <>
-              <Card.Text>{order.details.buyer.name}</Card.Text>
-              <Card.Text>{order.details.buyer.phone}</Card.Text>
-              <Card.Text>{order.details.buyer.address}</Card.Text>
-              <Card.Text>{order.details.buyer.email}</Card.Text>
-              <Card.Text>{order.details.buyer.comments}</Card.Text>
+              <Card.Text>{order.buyer.name}</Card.Text>
+              <Card.Text>{order.buyer.phone}</Card.Text>
+              <Card.Text>{order.buyer.address}</Card.Text>
+              <Card.Text>{order.buyer.email}</Card.Text>
+              <Card.Text>{order.buyer.comments}</Card.Text>
             </>
           ) : (
             <Card.Text>
@@ -73,13 +77,12 @@ export default function OrdersDetails({ email }) {
               email que realizó la compra
             </Card.Text>
           )}
-          <Card.Text>Monto total: $ {order.details.total}</Card.Text>
+          <Card.Text>Monto total: $ {order.total}</Card.Text>
           <hr />
           <Card.Text>Items: </Card.Text>
-          {order.details.items.map((item) => (
+          {order.items.map((item) => (
             <Card.Text key={item.id}>
-              {item.title} - {" "}
-              {item.quantity} unidades
+              {item.title} - {item.quantity} unidades
             </Card.Text>
           ))}
         </Card.Body>

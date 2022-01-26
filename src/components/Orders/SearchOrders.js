@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { useOrders } from "../../context/OrdersContext";
 import { Link } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import { getFirestore } from "../../firebase";
+
 
 export default function SearchOrders() {
-  const orders = useOrders();
   const [searchOrder, setSearchOrder] = useState();
   const [order, setOrder] = useState();
 
@@ -15,7 +15,14 @@ export default function SearchOrders() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    setOrder(orders.getOrderById(searchOrder));
+    const db = getFirestore();
+    const itemCollection = db.collection("orders").doc(searchOrder);
+    itemCollection
+      .get()
+      .then((data) => {
+        setOrder(data.data());
+      })
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -28,9 +35,9 @@ export default function SearchOrders() {
         <Button type="submit">Buscar</Button>
       </Form>
       {order && (
-        <Link to={"/orders/" + order.id}>
-          Se encontró la orden {order.id} del día{" "}
-          {new Date(order.details.date.seconds * 1000)
+        <Link to={"/orders/" + searchOrder}>
+          Se encontró la orden {searchOrder} del día{" "}
+          {new Date(order.date.seconds * 1000)
             .toISOString()
             .slice(0, 10)}
           , clickeá para ver los detalles

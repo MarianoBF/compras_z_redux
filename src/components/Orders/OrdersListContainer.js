@@ -1,27 +1,37 @@
+import { getFirestore } from "../../firebase";
 import { useEffect, useState } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import useMounted from "../../hooks/useMounted";
-import { useOrders } from "../../context/OrdersContext";
 import OrdersList from "./OrdersList";
 
 export default function ItemListContainer({ email }) {
-  const orders = useOrders();
   const [orderList, setOrderList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const isMounted = useMounted();
   const [noOrders, setNoOrders] = useState(false);
 
+
+  const [placedOrders, setPlacedOrders] = useState([]);
+
   useEffect(() => {
-    const retrievedOrders = orders.getUserOrders(email);
-    if (retrievedOrders.length > 0 && isMounted) {
+    const db = getFirestore();
+    const itemCollection = db.collection("orders");
+    itemCollection
+      .get()
+      .then((data) => {
+        setPlacedOrders(data.docs.map((item) => {return {id: item.id, details: item.data()}}));
+      })
+      .catch((error) => console.log(error));
+
+      if (placedOrders.length > 0 && isMounted) {
       setNoOrders(false);
-      setOrderList(retrievedOrders);
+      setOrderList(placedOrders.filter(item=>item.details.buyer.email === email));
       setIsLoading(false);
     } else {
       setIsLoading(false);
       setNoOrders(true);
     }
-  }, [email, isMounted, orders]);
+  }, [email, isMounted, placedOrders]);
 
   if (!email) {
     return (

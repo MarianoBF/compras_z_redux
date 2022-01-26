@@ -10,7 +10,6 @@ import ErrorComponent from "./components/ErrorComponent";
 import { HashRouter, Switch, Route } from "react-router-dom";
 import { CartProvider } from "./context/CartContext";
 import { ProductsProvider } from "./context/ProductsContext";
-import { OrdersProvider } from "./context/OrdersContext";
 import { useEffect, useState } from "react";
 import { loginWithGoogle, logoutFromGoogle } from "./firebase";
 import { useDispatch } from "react-redux";
@@ -61,7 +60,6 @@ function App() {
   };
 
   return (
-    <OrdersProvider>
       <ProductsProvider>
         <CartProvider>
           <HashRouter>
@@ -95,7 +93,6 @@ function App() {
           </HashRouter>
         </CartProvider>
       </ProductsProvider>
-    </OrdersProvider>
   );
 }
 
