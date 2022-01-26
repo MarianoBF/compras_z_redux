@@ -10,7 +10,6 @@ export default function ItemListContainer({ email }) {
   const isMounted = useMounted();
   const [noOrders, setNoOrders] = useState(false);
 
-
   const [placedOrders, setPlacedOrders] = useState([]);
 
   useEffect(() => {
@@ -19,19 +18,26 @@ export default function ItemListContainer({ email }) {
     itemCollection
       .get()
       .then((data) => {
-        setPlacedOrders(data.docs.map((item) => {return {id: item.id, details: item.data()}}));
+        setPlacedOrders(
+          data.docs.map((item) => {
+            return { id: item.id, details: item.data() };
+          })
+        );
+        if (placedOrders.length > 0 && isMounted) {
+          setNoOrders(false);
+          setOrderList(
+            placedOrders.filter((item) => item.details.buyer.email === email)
+          );
+          setIsLoading(false);
+        } else {
+          setIsLoading(false);
+          setNoOrders(true);
+        }
       })
       .catch((error) => console.log(error));
 
-      if (placedOrders.length > 0 && isMounted) {
-      setNoOrders(false);
-      setOrderList(placedOrders.filter(item=>item.details.buyer.email === email));
-      setIsLoading(false);
-    } else {
-      setIsLoading(false);
-      setNoOrders(true);
-    }
-  }, [email, isMounted, placedOrders]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [email, isMounted]);
 
   if (!email) {
     return (
@@ -57,8 +63,6 @@ export default function ItemListContainer({ email }) {
       </div>
     );
   }
-
-
 
   return (
     <>
