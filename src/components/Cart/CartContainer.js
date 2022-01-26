@@ -6,9 +6,7 @@ import { useHistory } from "react-router-dom";
 import BuyForm from "./BuyForm";
 import Alert from "react-bootstrap/Alert";
 import { Link } from "react-router-dom";
-import { useDispatch } from 'react-redux'
-import { useSelector } from 'react-redux'
-
+import { useSelector } from "react-redux";
 
 export default function CartContainer({ user }) {
   const cart = useCart();
@@ -20,15 +18,15 @@ export default function CartContainer({ user }) {
   const [stockErrorMessage, setStockErrorMessage] = useState([]);
   const [disable, setDisable] = useState(false);
 
-  const dispatch = useDispatch()
-
-  const productsToShow = useSelector(state => state.cart.cartProducts)
+  const productsToShow = useSelector((state) => state.cart.cartProducts);
 
   const priceReducer = (prev, cur) => prev + cur.quantity * cur.price;
-  const total =  useSelector(state => state.cart.cartProducts).reduce(priceReducer, 0);
+  const total = useSelector((state) => state.cart.cartProducts).reduce(
+    priceReducer,
+    0
+  );
 
   useEffect(() => {
-
     return () => {
       if (finishedOrder) {
         cart.clear();
@@ -139,7 +137,11 @@ export default function CartContainer({ user }) {
           <hr />
           {!finishedOrder && user.name && (
             <>
-              <Button onClick={handleShowForm} className="closeBtn" disabled={checkingStock}>
+              <Button
+                onClick={handleShowForm}
+                className="closeBtn"
+                disabled={checkingStock}
+              >
                 Completar mis datos y confirmar compra
               </Button>
               <Alert show={checkingStock} variant="success">

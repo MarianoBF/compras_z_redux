@@ -5,7 +5,6 @@ import { useHistory } from "react-router-dom";
 import ItemCount from "./ItemCount";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import Form from "react-bootstrap/Form";
 
 const styles = {
   Container: {
@@ -39,12 +38,10 @@ export default function ItemDetails({ item, addToCart, inCart }) {
   const { name, description, image, price, stock, id } = item;
   const history = useHistory();
 
-  const [inCartFlag, setInCartFlag] = useState(false);
-
   const [showBuy, setShowBuy] = useState(false);
   const handleAdd = (quantity, product_id) => {
     setShowBuy(true);
-    setInCartFlag(true);
+    // setInCartFlag(true);
     addToCart(quantity, product_id);
   };
 
@@ -61,7 +58,7 @@ export default function ItemDetails({ item, addToCart, inCart }) {
           <Card.Title>{name}</Card.Title>
           <Card.Text>{"$" + price}</Card.Text>
           <Card.Text>{description}</Card.Text>
-          {inCart ? (
+          {inCart() ? (
             <Link to="/cart">
               <Button className="spacedButton">
                 Producto seleccionado, ir al carrito

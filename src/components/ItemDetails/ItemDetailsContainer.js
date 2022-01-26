@@ -1,40 +1,40 @@
 import ItemDetails from "./ItemDetails";
-import {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
-import {useCart} from "../../context/CartContext";
 import useMounted from "../../hooks/useMounted";
-import {useHistory} from "react-router-dom";
-import {useProducts} from "../../context/ProductsContext";
-import { addProduct } from '../../redux/actions/cartActions'
-import { useDispatch } from 'react-redux'
+import { useHistory } from "react-router-dom";
+import { useProducts } from "../../context/ProductsContext";
+import { addProduct } from "../../redux/actions/cartActions";
+import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 
 export default function ItemListContainer() {
-  const cart = useCart();
   const [product, setProduct] = useState({});
-  const {id_product} = useParams();
+  const { id_product } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const isMounted = useMounted();
   const [outOfRange, setOutOfRange] = useState(false);
   const history = useHistory();
   const prods = useProducts();
-  const cartProducts = useSelector(state => state.cart.cartProducts)
+  const cartProducts = useSelector((state) => state.cart.cartProducts);
+
+  console.log("aaa", cartProducts.filter((item) => +item.id === +1).length);
 
   // const inCart = cart.isInCart(id_product);
-  const inCart = (id) => {
-    console.log("aaa",cartProducts.filter(item => +item.id === +id).length)
-    return cartProducts.filter(item => +item.id === +id).length > 0;
+  const inCart = () => {
+    console.log("aa");
+    return cartProducts.filter((item) => +item.id === +id_product).length > 0;
   };
-  const [wait, setWait] = useState(false)
+
+  const [wait, setWait] = useState(false);
 
   useEffect(() => {
     const currentProduct = prods.getProductById(id_product);
-   if (currentProduct === undefined) {
-      setWait(true)
-      setTimeout(setWait(false),2000)
-    }
-    else if (currentProduct?.length === 0 || currentProduct === undefined) {
+    if (currentProduct === undefined) {
+      setWait(true);
+      setTimeout(setWait(false), 2000);
+    } else if (currentProduct?.length === 0 || currentProduct === undefined) {
       setOutOfRange(true);
       setTimeout(() => {
         setOutOfRange(false);
@@ -45,17 +45,17 @@ export default function ItemListContainer() {
       setIsLoading(false);
     }
     //eslint-disable-next-line
-  }, [id_product,isMounted, prods, wait]);
+  }, [id_product, isMounted, prods, wait]);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const addToCart = (quantity, id) => {
-    dispatch(addProduct( quantity, id ))
+    dispatch(addProduct(quantity, id));
   };
 
   if (isLoading || wait) {
     return (
-      <div style={{textAlign: "center"}}>
+      <div style={{ textAlign: "center" }}>
         <h2>Trayendo información del producto...</h2>
         <Spinner animation="border" />
       </div>
@@ -64,7 +64,7 @@ export default function ItemListContainer() {
 
   if (outOfRange) {
     return (
-      <div style={{textAlign: "center"}}>
+      <div style={{ textAlign: "center" }}>
         <h2>Producto inexistente</h2>
         <h2>Serás redirigido a la página principal</h2>
       </div>
@@ -74,11 +74,7 @@ export default function ItemListContainer() {
   return (
     <>
       <h1 className="mainTitle">Detalles del producto</h1>
-      <ItemDetails
-        item={product}
-        addToCart={addToCart}
-        inCart={inCart}
-      />
+      <ItemDetails item={product} addToCart={addToCart} inCart={inCart} />
     </>
   );
 }

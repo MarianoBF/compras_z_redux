@@ -58,4 +58,11 @@ const fetchProducts = () => {
   };
 };
 
-export { addProduct, removeProduct, clearCart, fetchProducts, increaseProductQuantity, decreaseProductQuantity };
+export {
+  addProduct,
+  removeProduct,
+  clearCart,
+  fetchProducts,
+  increaseProductQuantity,
+  decreaseProductQuantity,
+};

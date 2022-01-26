@@ -169,7 +169,6 @@ export const CartProvider = ({ children }) => {
   return (
     <CartContext.Provider
       value={{
-
         checkStock,
         saveOrder,
         getOrderID,

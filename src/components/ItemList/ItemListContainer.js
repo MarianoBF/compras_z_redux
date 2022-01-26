@@ -1,17 +1,16 @@
-import {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import ItemList from "./ItemList";
 import Spinner from "react-bootstrap/Spinner";
 import useMounted from "../../hooks/useMounted";
-import {useHistory} from "react-router-dom";
-import {useProducts} from "../../context/ProductsContext";
-import {useCart} from "../../context/CartContext";
+import { useHistory } from "react-router-dom";
+import { useProducts } from "../../context/ProductsContext";
 import { useSelector } from "react-redux";
 
 export default function ItemListContainer() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
-  const {id_category} = useParams();
+  const { id_category } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const isMounted = useMounted();
   const [outOfRange, setOutOfRange] = useState(false);
@@ -19,18 +18,20 @@ export default function ItemListContainer() {
   const [noStock, setNoStock] = useState(false);
   const prods = useProducts();
 
-  const cartProducts = useSelector(state => state.cart.cartProducts)
+  const cartProducts = useSelector((state) => state.cart.cartProducts);
 
   const inCart = (id) => {
-      return cartProducts.filter(item => +item.id === +id).length > 0;
-    };
+    return cartProducts.filter((item) => +item.id === +id).length > 0;
+  };
 
   useEffect(() => {
     if (id_category === undefined) {
       const allProds = prods.getSortedProducts();
       if (isMounted.current) {
         setProducts(
-          allProds.filter(item => (noStock ? item.stock >= 0 : item.stock > 0))
+          allProds.filter((item) =>
+            noStock ? item.stock >= 0 : item.stock > 0
+          )
         );
         setIsLoading(false);
       }
@@ -45,7 +46,7 @@ export default function ItemListContainer() {
           }, 2000);
         } else {
           setProducts(
-            allProds.filter(item =>
+            allProds.filter((item) =>
               noStock ? item.stock >= 0 : item.stock > 0
             )
           );
@@ -69,7 +70,7 @@ export default function ItemListContainer() {
       setCategory("todas las categorías");
     } else {
       const categoryFilter = categories.filter(
-        item => item.id === +id_category
+        (item) => item.id === +id_category
       );
       setCategory(
         "la categoría " + categoryFilter[0]?.name ? categoryFilter[0]?.name : ""
@@ -83,7 +84,7 @@ export default function ItemListContainer() {
 
   if (isLoading) {
     return (
-      <div style={{textAlign: "center"}}>
+      <div style={{ textAlign: "center" }}>
         <h2>Trayendo listado de productos...</h2>
         <Spinner animation="border" />
       </div>
@@ -92,7 +93,7 @@ export default function ItemListContainer() {
 
   if (outOfRange) {
     return (
-      <div style={{textAlign: "center"}}>
+      <div style={{ textAlign: "center" }}>
         <h2>Categoría inexistente</h2>
         <h2>Serás redirigido a la página principal</h2>
       </div>
@@ -109,7 +110,7 @@ export default function ItemListContainer() {
           ? "Sólo mostrar artículos con stock disponible"
           : "Ver artículos sin stock disponible"}
       </button>
-      <ItemList products={products} inCart={inCart}/>
+      <ItemList products={products} inCart={inCart} />
     </div>
   );
 }
