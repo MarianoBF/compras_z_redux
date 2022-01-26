@@ -7,6 +7,8 @@ import BuyForm from "./BuyForm";
 import Alert from "react-bootstrap/Alert";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { createOrder } from "../../redux/actions/orderActions";
 
 export default function CartContainer({ user }) {
   const cart = useCart();
@@ -25,6 +27,8 @@ export default function CartContainer({ user }) {
     priceReducer,
     0
   );
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     return () => {
@@ -84,7 +88,7 @@ export default function CartContainer({ user }) {
 
   const handleSubmit = (values) => {
     setDisable(true);
-    const orderedProducts = cart.cartProducts.map((item) => ({
+    const orderedProducts = productsToShow.map((item) => ({
       id: item.id,
       title: item.name,
       price: item.price,
@@ -103,7 +107,8 @@ export default function CartContainer({ user }) {
       date: new Date(),
       total,
     };
-    cart.saveOrder(order);
+    // cart.saveOrder(order);
+    dispatch(createOrder(order));
     setFinishedOrder(true);
     setShowForm(false);
   };

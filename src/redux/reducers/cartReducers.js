@@ -1,5 +1,3 @@
-import { combineReducers } from "redux";
-
 const initialState = {
   allProducts: [],
   cartProducts: [],
@@ -37,7 +35,7 @@ const cartReducer = (state = initialState, action) => {
         (item) => +item.id === +action.payload.id
       );
       const increasedProds = [...state.cartProducts];
-      increasedProds[prodToIncrease].quantity--;
+      if (increasedProds[prodToIncrease].stock > increasedProds[prodToIncrease].quantity) increasedProds[prodToIncrease].quantity++ ;
       return {
         ...state,
         cartProducts: [...increasedProds],
@@ -47,7 +45,7 @@ const cartReducer = (state = initialState, action) => {
         (item) => +item.id === +action.payload.id
       );
       const decreasedProds = [...state.cartProducts];
-      decreasedProds[prodToDecrease].quantity++;
+      if (increasedProds[prodToDecrease].quantity > 1) increasedProds[prodToDecrease].quantity-- ;
       return {
         ...state,
         cartProducts: [...decreasedProds],
@@ -64,8 +62,4 @@ const cartReducer = (state = initialState, action) => {
   }
 };
 
-const rootReducer = combineReducers({
-  cart: cartReducer,
-});
-
-export default rootReducer;
+export default cartReducer;
