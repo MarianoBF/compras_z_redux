@@ -6,6 +6,7 @@ import useMounted from "../../hooks/useMounted";
 import {useHistory} from "react-router-dom";
 import {useProducts} from "../../context/ProductsContext";
 import {useCart} from "../../context/CartContext";
+import { useSelector } from "react-redux";
 
 export default function ItemListContainer() {
   const [products, setProducts] = useState([]);
@@ -17,9 +18,12 @@ export default function ItemListContainer() {
   const history = useHistory();
   const [noStock, setNoStock] = useState(false);
   const prods = useProducts();
-  const cart = useCart();
 
-  const inCart = (item) => cart.isInCart(item)
+  const cartProducts = useSelector(state => state.cart.cartProducts)
+
+  const inCart = (id) => {
+      return cartProducts.filter(item => +item.id === +id).length > 0;
+    };
 
   useEffect(() => {
     if (id_category === undefined) {

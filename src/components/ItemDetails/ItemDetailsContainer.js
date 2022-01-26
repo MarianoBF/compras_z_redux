@@ -8,6 +8,7 @@ import {useHistory} from "react-router-dom";
 import {useProducts} from "../../context/ProductsContext";
 import { addProduct } from '../../redux/actions/cartActions'
 import { useDispatch } from 'react-redux'
+import { useSelector } from "react-redux";
 
 export default function ItemListContainer() {
   const cart = useCart();
@@ -18,9 +19,13 @@ export default function ItemListContainer() {
   const [outOfRange, setOutOfRange] = useState(false);
   const history = useHistory();
   const prods = useProducts();
+  const cartProducts = useSelector(state => state.cart.cartProducts)
 
-  const inCart = cart.isInCart(id_product);
-  
+  // const inCart = cart.isInCart(id_product);
+  const inCart = (id) => {
+    console.log("aaa",cartProducts.filter(item => +item.id === +id).length)
+    return cartProducts.filter(item => +item.id === +id).length > 0;
+  };
   const [wait, setWait] = useState(false)
 
   useEffect(() => {

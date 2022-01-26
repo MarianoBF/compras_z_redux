@@ -48,12 +48,6 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem("compras_z_cart", []);
   };
 
-  const isInCart = (product_id) => {
-    return !(
-      cartProducts.filter((item) => +item.id === +product_id).length === 0
-    );
-  };
-
   const checkStock = () => {
     prods.NotifyPurchase();
     retrieveProducts();
@@ -175,8 +169,7 @@ export const CartProvider = ({ children }) => {
   return (
     <CartContext.Provider
       value={{
-        cartProducts,
-        isInCart,
+
         checkStock,
         saveOrder,
         getOrderID,
