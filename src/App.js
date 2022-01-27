@@ -13,7 +13,7 @@ import { ProductsProvider } from "./context/ProductsContext";
 import { useEffect, useState } from "react";
 import { loginWithGoogle, logoutFromGoogle } from "./firebase";
 import { useDispatch } from "react-redux";
-import { fetchProducts } from "./redux/actions/cartActions";
+import { fetchProducts } from "./redux/actions/productActions";
 
 function App() {
   const [user, setUser] = useState({});

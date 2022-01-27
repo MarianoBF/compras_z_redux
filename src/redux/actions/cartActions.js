@@ -1,5 +1,3 @@
-import { getFirestore } from "../../firebase";
-
 function addProduct(quantity, id) {
   return {
     type: "ADD_PRODUCT",
@@ -34,35 +32,18 @@ function clearCart() {
   };
 }
 
-function getInitialProducts(products) {
+function getInitialProductsCart(products) {
   return {
-    type: "GET_INITIAL_PRODUCTS",
+    type: "GET_INITIAL_PRODUCTS_CART",
     payload: products,
   };
 }
-
-const fetchProducts = () => {
-  return (dispatch) => {
-    try {
-      const db = getFirestore();
-      const itemCollection = db.collection("products");
-      itemCollection
-        .get()
-        .then((data) => {
-          dispatch(getInitialProducts(data.docs.map((item) => item.data())));
-        })
-        .catch((error) => console.log(error));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-};
 
 export {
   addProduct,
   removeProduct,
   clearCart,
-  fetchProducts,
+  getInitialProductsCart,
   increaseProductQuantity,
   decreaseProductQuantity,
 };

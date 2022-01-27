@@ -88,7 +88,7 @@ export default function CartContainer({ user }) {
 
   const handleSubmit = (values) => {
     setDisable(true);
-    const orderedProducts = productsToShow.map((item) => ({
+    const orderedProducts = cart.cartProducts.map((item) => ({
       id: item.id,
       title: item.name,
       price: item.price,

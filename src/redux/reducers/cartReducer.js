@@ -52,7 +52,7 @@ const cartReducer = (state = initialState, action) => {
       };
     case "CLEAR_PRODUCTS":
       return initialState;
-    case "GET_INITIAL_PRODUCTS":
+    case "GET_INITIAL_PRODUCTS_CART":
       return {
         ...state,
         allProducts: [...action.payload],
