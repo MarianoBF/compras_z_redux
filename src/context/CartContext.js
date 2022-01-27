@@ -49,7 +49,6 @@ export const CartProvider = ({ children }) => {
   };
 
   const checkStock = () => {
-    prods.NotifyPurchase();
     retrieveProducts();
     let stockError = [];
     cartProducts.forEach((item) => {

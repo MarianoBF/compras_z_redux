@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
 import useMounted from "../../hooks/useMounted";
 import { useHistory } from "react-router-dom";
-import { useProducts } from "../../context/ProductsContext";
 import { addProduct } from "../../redux/actions/cartActions";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -16,17 +15,17 @@ export default function ItemListContainer() {
   const isMounted = useMounted();
   const [outOfRange, setOutOfRange] = useState(false);
   const history = useHistory();
-  const prods = useProducts();
+  // const prods = useProducts();
   const cartProducts = useSelector((state) => state.cart.cartProducts);
-
   const inCart = () => {
     return cartProducts.filter((item) => +item.id === +id_product).length > 0;
   };
+  const products = useSelector((state) => state.cart.products)
 
   const [wait, setWait] = useState(false);
 
   useEffect(() => {
-    const currentProduct = prods.getProductById(id_product);
+    const currentProduct = products.filter(item => +item.id === +id_product)[0] || [];
     if (currentProduct === undefined) {
       setWait(true);
       setTimeout(setWait(false), 2000);

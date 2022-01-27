@@ -108,6 +108,9 @@ export default function CartContainer({ user }) {
       total,
     };
     // cart.saveOrder(order);
+    //--checkstock
+    // dispatch(fetchProducts()); actualziar y chequear
+
     dispatch(createOrder(order));
     setFinishedOrder(true);
     setShowForm(false);

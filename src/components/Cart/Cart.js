@@ -140,7 +140,7 @@ export default function Cart({
               <td>
                 <Button
                   style={styles.SmallButton}
-                  onClick={() => clearRedux("aa")}
+                  onClick={() => clearRedux()}
                   disabled={disable}
                 >
                   Vaciar Carrito
