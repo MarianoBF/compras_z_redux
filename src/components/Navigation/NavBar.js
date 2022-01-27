@@ -5,7 +5,6 @@ import CartWidget from "./CartWidget";
 import { LinkContainer } from "react-router-bootstrap";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useProducts } from "../../context/ProductsContext";
 
 const styles = {
   categories: {
@@ -36,11 +35,10 @@ const styles = {
 
 function NavBar({ login, logout, user }) {
   const [categories, setCategories] = useState([]);
-  const prods = useProducts();
 
   useEffect(() => {
-    setCategories(prods.getCategories());
-  }, [user, prods]);
+    setCategories(["Libros", "Electrónica"]);
+  }, [user]);
 
   const categoryList = categories.map((item) => (
     <LinkContainer

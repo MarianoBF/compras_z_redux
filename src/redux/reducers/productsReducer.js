@@ -1,6 +1,6 @@
-
 const initialState = {
-  products: []
+  products: [],
+  categories: [],
 };
 
 const productsReducer = (state = initialState, action) => {
@@ -9,6 +9,11 @@ const productsReducer = (state = initialState, action) => {
       return {
         ...state,
         products: [...action.payload],
+      };
+    case "GET_CATEGORIES":
+      return {
+        ...state,
+        categories: [...action.payload],
       };
     default:
       return state;

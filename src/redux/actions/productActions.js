@@ -9,6 +9,13 @@ function getInitialProducts(products) {
   };
 }
 
+function getCategories(products) {
+  return {
+    type: "GET_CATEGORIES",
+    payload: products,
+  };
+}
+
 const fetchProducts = () => {
   return (dispatch) => {
     try {
@@ -29,4 +36,20 @@ const fetchProducts = () => {
   };
 };
 
-export { fetchProducts };
+const fetchCategories = () => {
+  return (dispatch) => {try {
+  const db = getFirestore();
+  const itemCollection = db.collection("categories");
+  itemCollection
+    .get()
+    .then(data => {
+      dispatch(getCategories(data.docs.map(item => item.data())));
+    })
+    .catch(error => console.log(error));
+  } catch (error) {
+    console.log(error)
+  }
+}
+}
+
+export { fetchProducts, fetchCategories };

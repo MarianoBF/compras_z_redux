@@ -9,7 +9,6 @@ import OrdersDetail from "./components/Orders/OrdersDetail";
 import ErrorComponent from "./components/ErrorComponent";
 import { HashRouter, Switch, Route } from "react-router-dom";
 import { CartProvider } from "./context/CartContext";
-import { ProductsProvider } from "./context/ProductsContext";
 import { useEffect, useState } from "react";
 import { loginWithGoogle, logoutFromGoogle } from "./firebase";
 import { useDispatch } from "react-redux";
@@ -60,7 +59,6 @@ function App() {
   };
 
   return (
-      <ProductsProvider>
         <CartProvider>
           <HashRouter>
             <NavBar login={login} logout={logout} user={user} />
@@ -92,7 +90,6 @@ function App() {
             </Switch>
           </HashRouter>
         </CartProvider>
-      </ProductsProvider>
   );
 }
 

@@ -4,7 +4,6 @@ import ItemList from "./ItemList";
 import Spinner from "react-bootstrap/Spinner";
 import useMounted from "../../hooks/useMounted";
 import { useHistory } from "react-router-dom";
-import { useProducts } from "../../context/ProductsContext";
 import { useSelector } from "react-redux";
 
 export default function ItemListContainer() {
@@ -16,9 +15,10 @@ export default function ItemListContainer() {
   const [outOfRange, setOutOfRange] = useState(false);
   const history = useHistory();
   const [noStock, setNoStock] = useState(false);
-  const prods = useProducts();
 
   const cartProducts = useSelector((state) => state.cart.cartProducts);
+
+  const allProducts = useSelector((state) => state.products);
 
   const inCart = (id) => {
     return cartProducts.filter((item) => +item.id === +id).length > 0;
@@ -26,7 +26,7 @@ export default function ItemListContainer() {
 
   useEffect(() => {
     if (id_category === undefined) {
-      const allProds = prods.getSortedProducts();
+      const allProds = allProducts.products.sort((a, b) => (+a.id > +b.id ? 1 : -1));
       if (isMounted.current) {
         setProducts(
           allProds.filter((item) =>
@@ -36,7 +36,7 @@ export default function ItemListContainer() {
         setIsLoading(false);
       }
     } else {
-      const allProds = prods.getProductsByCategory(+id_category);
+      const allProds = allProducts.products.sort((a, b) => (+a.id > +b.id ? 1 : -1)).filter(item => item.category === +id_category);
       if (isMounted.current) {
         if (allProds.length === 0) {
           setOutOfRange(true);
@@ -54,14 +54,14 @@ export default function ItemListContainer() {
         }
       }
     }
-  }, [id_category, history, isMounted, noStock, prods]);
+  }, [id_category, history, isMounted, noStock, allProducts.products]);
 
   useEffect(() => {
-    const allCategories = prods.getCategories();
+    const allCategories = allProducts.categories;
     if (isMounted.current) {
       setCategories(allCategories);
     }
-  }, [isMounted, prods]);
+  }, [allProducts.categories, isMounted]);
 
   const [category, setCategory] = useState("");
 

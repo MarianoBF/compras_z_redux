@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext, createContext } from "react";
 import { getFirestore } from "../firebase";
 import emailjs from "emailjs-com";
-import { useProducts } from "./ProductsContext";
 
 const CartContext = createContext();
 
@@ -10,8 +9,6 @@ export const useCart = () => useContext(CartContext);
 export const CartProvider = ({ children }) => {
   const [allProducts, setAllProducts] = useState([]);
   const [cartProducts, setCartProducts] = useState([]);
-
-  const prods = useProducts();
 
   const {
     REACT_APP_MAIL_TEMPLATE,
