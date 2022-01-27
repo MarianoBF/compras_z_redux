@@ -5,6 +5,7 @@ import CartWidget from "./CartWidget";
 import { LinkContainer } from "react-router-bootstrap";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const styles = {
   categories: {
@@ -35,10 +36,11 @@ const styles = {
 
 function NavBar({ login, logout, user }) {
   const [categories, setCategories] = useState([]);
+  const categories2 = (useSelector((state) => state.products.categories))
 
   useEffect(() => {
-    setCategories(["Libros", "Electrónica"]);
-  }, [user]);
+    setCategories(categories2);
+  }, [categories2, user]);
 
   const categoryList = categories.map((item) => (
     <LinkContainer

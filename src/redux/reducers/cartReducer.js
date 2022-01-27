@@ -45,7 +45,7 @@ const cartReducer = (state = initialState, action) => {
         (item) => +item.id === +action.payload.id
       );
       const decreasedProds = [...state.cartProducts];
-      if (increasedProds[prodToDecrease].quantity > 1) increasedProds[prodToDecrease].quantity-- ;
+      if (decreasedProds[prodToDecrease].quantity > 1) decreasedProds[prodToDecrease].quantity-- ;
       return {
         ...state,
         cartProducts: [...decreasedProds],

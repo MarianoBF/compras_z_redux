@@ -12,7 +12,7 @@ import { CartProvider } from "./context/CartContext";
 import { useEffect, useState } from "react";
 import { loginWithGoogle, logoutFromGoogle } from "./firebase";
 import { useDispatch } from "react-redux";
-import { fetchProducts } from "./redux/actions/productActions";
+import { fetchProducts, fetchCategories } from "./redux/actions/productActions";
 
 function App() {
   const [user, setUser] = useState({});
@@ -21,6 +21,7 @@ function App() {
   // Placeholder "restore auth"
   useEffect(() => {
     dispatch(fetchProducts());
+    dispatch(fetchCategories());
     const userData = JSON.parse(localStorage.getItem("compras_z_user"));
     if (userData && userData.time > Date.now() - 1000 * 60 * 60) {
       setUser(userData);

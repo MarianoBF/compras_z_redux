@@ -15,32 +15,34 @@ export default function ItemListContainer() {
   const isMounted = useMounted();
   const [outOfRange, setOutOfRange] = useState(false);
   const history = useHistory();
-  // const prods = useProducts();
   const cartProducts = useSelector((state) => state.cart.cartProducts);
   const inCart = () => {
     return cartProducts.filter((item) => +item.id === +id_product).length > 0;
   };
-  const products = useSelector((state) => state.cart.products)
+  const products = useSelector((state) => state.products.products);
 
   const [wait, setWait] = useState(false);
 
   useEffect(() => {
-    const currentProduct = products.filter(item => +item.id === +id_product)[0] || [];
-    if (currentProduct === undefined) {
+    if (products === undefined) {
       setWait(true);
       setTimeout(setWait(false), 2000);
-    } else if (currentProduct?.length === 0 || currentProduct === undefined) {
-      setOutOfRange(true);
-      setTimeout(() => {
-        setOutOfRange(false);
-        history.push("/");
-      }, 2000);
-    } else if (isMounted.current) {
-      setProduct(currentProduct);
-      setIsLoading(false);
+    } else {
+      const currentProduct =
+        products.filter((item) => +item.id === +id_product)[0] || [];
+
+      if (currentProduct?.length === 0 || currentProduct === undefined) {
+        setOutOfRange(true);
+        setTimeout(() => {
+          setOutOfRange(false);
+          history.push("/");
+        }, 2000);
+      } else if (isMounted.current) {
+        setProduct(currentProduct);
+        setIsLoading(false);
+      }
     }
-    //eslint-disable-next-line
-  }, [id_product, isMounted, prods, wait]);
+  }, [history, id_product, isMounted, products, wait]);
 
   const dispatch = useDispatch();
 
