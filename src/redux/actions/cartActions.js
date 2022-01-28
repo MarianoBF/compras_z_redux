@@ -1,3 +1,5 @@
+import { fetchProducts } from "./productActions";
+
 function addProduct(quantity, id) {
   return {
     type: "ADD_PRODUCT",
@@ -39,13 +41,21 @@ function getInitialProductsCart(products) {
   };
 }
 
-function createOrder(order) {
+function submitCreateOrder(order) {
   return {
     type: "CREATE_ORDER",
     payload: { order },
   };
 }
 
+const createOrder = (order) => {
+  return (dispatch) => {
+          dispatch(submitCreateOrder(order));
+          dispatch(
+            fetchProducts()
+          );
+        }
+};
 
 export {
   addProduct,

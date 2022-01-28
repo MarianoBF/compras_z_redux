@@ -26,14 +26,14 @@ export default function ItemCount({
     <>
       {(!showBuy) && (
         <>
-          <Button color="info" onClick={handleMore}>
-            {" "}
-            +{" "}
-          </Button>
-          {` ${quantity} `}
           <Button color="info" onClick={handleLess}>
             {" "}
             -{" "}
+          </Button>
+          {` ${quantity} `}
+          <Button color="info" onClick={handleMore}>
+            {" "}
+            +{" "}
           </Button>{" "}
           <Button
             className="spacedButton"

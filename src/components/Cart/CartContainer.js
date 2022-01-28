@@ -8,7 +8,7 @@ import Alert from "react-bootstrap/Alert";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { createOrder } from "../../redux/actions/cartActions";
+import { createOrder, clearCart } from "../../redux/actions/cartActions";
 
 export default function CartContainer({ user }) {
   const cart = useCart();
@@ -53,7 +53,7 @@ export default function CartContainer({ user }) {
 
   const handleCloseAlert = () => {
     setFinishedOrder(false);
-    cart.clear();
+    dispatch(clearCart());
     history.push("/");
   };
 
@@ -82,36 +82,16 @@ export default function CartContainer({ user }) {
   const handleCancel = () => {
     setDisable(true);
     setShowForm(false);
-    cart.clear();
+    dispatch(clearCart());
     history.push("/");
   };
 
   const handleSubmit = (values) => {
     setDisable(true);
-    const orderedProducts = cart.cartProducts.map((item) => ({
-      id: item.id,
-      title: item.name,
-      price: item.price,
-      quantity: item.quantity,
-      stock: item.stock,
-    }));
-    const order = {
-      buyer: {
-        name: values.name,
-        phone: values.phone,
-        email: values.email,
-        address: values.address,
-        comments: values.comments,
-      },
-      items: [...orderedProducts],
-      date: new Date(),
-      total,
-    };
-    // dispatch(fetchProducts()); actualziar y chequear
-      dispatch(createOrder(order));
-      setFinishedOrder(true);
-      setShowForm(false);
-
+    console.log(values);
+    dispatch(createOrder(values));
+    setFinishedOrder(true);
+    setShowForm(false);
   };
 
   return (
