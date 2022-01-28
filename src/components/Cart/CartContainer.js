@@ -8,7 +8,7 @@ import Alert from "react-bootstrap/Alert";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { createOrder } from "../../redux/actions/orderActions";
+import { createOrder } from "../../redux/actions/cartActions";
 
 export default function CartContainer({ user }) {
   const cart = useCart();
@@ -107,13 +107,11 @@ export default function CartContainer({ user }) {
       date: new Date(),
       total,
     };
-    // cart.saveOrder(order);
-    //--checkstock
     // dispatch(fetchProducts()); actualziar y chequear
+      dispatch(createOrder(order));
+      setFinishedOrder(true);
+      setShowForm(false);
 
-    dispatch(createOrder(order));
-    setFinishedOrder(true);
-    setShowForm(false);
   };
 
   return (

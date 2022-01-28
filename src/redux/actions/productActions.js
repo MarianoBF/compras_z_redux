@@ -37,19 +37,20 @@ const fetchProducts = () => {
 };
 
 const fetchCategories = () => {
-  return (dispatch) => {try {
-  const db = getFirestore();
-  const itemCollection = db.collection("categories");
-  itemCollection
-    .get()
-    .then(data => {
-      dispatch(getCategories(data.docs.map(item => item.data())));
-    })
-    .catch(error => console.log(error));
-  } catch (error) {
-    console.log(error)
-  }
-}
-}
+  return (dispatch) => {
+    try {
+      const db = getFirestore();
+      const itemCollection = db.collection("categories");
+      itemCollection
+        .get()
+        .then((data) => {
+          dispatch(getCategories(data.docs.map((item) => item.data())));
+        })
+        .catch((error) => console.log(error));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
 
 export { fetchProducts, fetchCategories };

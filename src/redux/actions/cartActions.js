@@ -39,10 +39,19 @@ function getInitialProductsCart(products) {
   };
 }
 
+function createOrder(order) {
+  return {
+    type: "CREATE_ORDER",
+    payload: { order },
+  };
+}
+
+
 export {
   addProduct,
   removeProduct,
   clearCart,
+  createOrder,
   getInitialProductsCart,
   increaseProductQuantity,
   decreaseProductQuantity,

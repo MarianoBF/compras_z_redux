@@ -1,6 +1,9 @@
+import { getFirestore } from "../../firebase";
+
 const initialState = {
   allProducts: [],
   cartProducts: [],
+  order: {}
 };
 
 const cartReducer = (state = initialState, action) => {
@@ -52,6 +55,27 @@ const cartReducer = (state = initialState, action) => {
       };
     case "CLEAR_PRODUCTS":
       return initialState;
+      case "CREATE_ORDER":
+        let order_id;
+        getFirestore()
+          .collection("orders")
+          .add(action.payload.order)
+          .then((res) => {
+            order_id = res.id;
+            action.payload.order.items.forEach((item) =>
+              getFirestore()
+                .collection("products")
+                .doc(String(item.id))
+                .update({ stock: item.stock - item.quantity })
+            );
+          })
+          .catch((error) => {
+            console.log(error);
+            return error;
+          });
+        return {
+          order: { id: order_id },
+        };
     case "GET_INITIAL_PRODUCTS_CART":
       return {
         ...state,

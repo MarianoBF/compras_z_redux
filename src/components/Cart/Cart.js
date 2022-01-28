@@ -42,7 +42,6 @@ const styles = {
 
 export default function Cart({
   products,
-  cartMethods,
   finished,
   disable,
   total,
