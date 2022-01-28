@@ -1,4 +1,3 @@
-import { useCart } from "../../context/CartContext";
 import Button from "react-bootstrap/Button";
 import Cart from "./Cart";
 import { useState, useEffect } from "react";
@@ -11,7 +10,6 @@ import { useDispatch } from "react-redux";
 import { createOrder, clearCart } from "../../redux/actions/cartActions";
 
 export default function CartContainer({ user }) {
-  const cart = useCart();
   const history = useHistory();
   const [finishedOrder, setFinishedOrder] = useState(false);
   const [showForm, setShowForm] = useState(false);
@@ -28,19 +26,21 @@ export default function CartContainer({ user }) {
     0
   );
 
+  const order_id = useSelector((state) => state.cart.order_id);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     return () => {
       if (finishedOrder) {
-        cart.clear();
+        dispatch(clearCart());
         setFinishedOrder(false);
       }
     };
     // eslint-disable-next-line
   }, [finishedOrder]);
 
-  if (cart.cartProducts?.length === 0) {
+  if (productsToShow?.length === 0) {
     return (
       <div className="centered">
         <h1>Aún no hay productos en el carrito</h1>
@@ -62,7 +62,7 @@ export default function CartContainer({ user }) {
     setStockError(false);
     setCheckingStock(true);
     setTimeout(() => {
-      const stock = cart.checkStock();
+      const stock = "OK"
       if (stock === "OK") {
         setShowForm(true);
         setCheckingStock(false);
@@ -88,7 +88,6 @@ export default function CartContainer({ user }) {
 
   const handleSubmit = (values) => {
     setDisable(true);
-    console.log(values);
     dispatch(createOrder(values));
     setFinishedOrder(true);
     setShowForm(false);
@@ -99,7 +98,7 @@ export default function CartContainer({ user }) {
       <Alert show={finishedOrder} variant="success">
         <p>
           Se ha realizado tu pedido exitosamente {user.name}. El número de
-          registro del pedido es: {cart.getOrderID()}
+          registro del pedido es: {order_id}
         </p>
         <p>
           Recibirás un correo electrónico confirmando la fecha de entrega e

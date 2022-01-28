@@ -4,6 +4,7 @@ const initialState = {
   allProducts: [],
   cartProducts: [],
   order: {},
+  order_id: "",
 };
 
 const cartReducer = (state = initialState, action) => {
@@ -59,7 +60,7 @@ const cartReducer = (state = initialState, action) => {
         cartProducts: [...decreasedProds],
       };
     case "CLEAR_PRODUCTS":
-      return initialState;
+      return { ...state, cartProducts: [] };
     case "CREATE_ORDER":
       let order_id;
       let stockError = [];
@@ -153,7 +154,7 @@ const cartReducer = (state = initialState, action) => {
             console.log(error);
             return error;
           });
-        return { ...state, order: { id: order_id } };
+        return { ...state, order_id };
       }
     case "GET_INITIAL_PRODUCTS_CART":
       return {
