@@ -7,7 +7,7 @@ import Alert from "react-bootstrap/Alert";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { createOrder, clearCart } from "../../redux/actions/cartActions";
+import { createOrder, clearCart, checkStock } from "../../redux/actions/cartActions";
 
 export default function CartContainer({ user }) {
   const history = useHistory();
@@ -39,8 +39,7 @@ export default function CartContainer({ user }) {
         setFinishedOrder(false);
       }
     };
-    // eslint-disable-next-line
-  }, [finishedOrder]);
+  }, [dispatch, finishedOrder]);
 
   if (productsToShow?.length === 0) {
     return (
@@ -64,7 +63,9 @@ export default function CartContainer({ user }) {
     setDisable(false);
     setStockError(false);
     setCheckingStock(true);
+    dispatch(checkStock());
     setTimeout(() => {
+      console.log("stock", stock)
       if (stock === "OK") {
         setShowForm(true);
         setCheckingStock(false);
@@ -73,7 +74,7 @@ export default function CartContainer({ user }) {
         setStockError(true);
         setStockErrorMessage(stock);
       }
-    }, 2000);
+    }, 5000);
   };
 
   const handleReturn = () => {

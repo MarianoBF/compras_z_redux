@@ -1,6 +1,6 @@
 import { fetchProducts } from "./productActions";
 import { getFirestore } from "../../firebase";
-import store from "../store"
+import store from "../store";
 
 function addProduct(quantity, id) {
   return {
@@ -59,22 +59,12 @@ function updateStockChecked(status) {
 
 const checkStock = () => {
   return (dispatch) => {
-    let allProducts = [];
-    let cartProducts = store.getState().cartProducts;
-    console.log(cartProducts)
-    try {
-      const db = getFirestore();
-      const itemCollection = db.collection("products");
-      itemCollection
-        .get()
-        .then((data) => {
-          allProducts = data.docs.map((item) => item.data());
-        })
-        .catch((error) => console.log(error));
-    } catch (error) {
-      console.log(error);
-    }
+    dispatch(fetchProducts());
+
+    let allProducts = store.getState().cart.allProducts;
+    let cartProducts = store.getState().cart.cartProducts;
     let stockError = [];
+
     cartProducts.forEach((item) => {
       const filtered = allProducts.filter((all) => all.id === item.id)[0];
       const alreadyAccountedFor = stockError.filter(
@@ -124,55 +114,57 @@ const checkStock = () => {
       }
     });
     if (stockError.length > 0) {
-      return stockError;
-  }
-}
-}
+      dispatch(updateStockChecked(stockError));
+    } else {
+      dispatch(updateStockChecked("OK"));
+    }
+  };
+};
 
 const createOrder = (order_details) => {
   return (dispatch) => {
-      let cartProducts = store.getState().cartProducts;
-      const priceReducer = (prev, cur) => prev + cur.quantity * cur.price;
-      const orderedProducts = cartProducts.map((item) => ({
-        id: item.id,
-        title: item.name,
-        price: item.price,
-        quantity: item.quantity,
-        stock: item.stock,
-      }));
-      const order = {
-        buyer: {
-          name: order_details.name,
-          phone: order_details.phone,
-          email: order_details.email,
-          address: order_details.address,
-          comments: order_details.comments,
-        },
-        items: [...orderedProducts],
-        date: new Date(),
-        total: cartProducts.reduce(priceReducer, 0),
-      };
+    let cartProducts = store.getState().cart.cartProducts;
+    const priceReducer = (prev, cur) => prev + cur.quantity * cur.price;
+    const orderedProducts = cartProducts.map((item) => ({
+      id: item.id,
+      title: item.name,
+      price: item.price,
+      quantity: item.quantity,
+      stock: item.stock,
+    }));
+    const order = {
+      buyer: {
+        name: order_details.name,
+        phone: order_details.phone,
+        email: order_details.email,
+        address: order_details.address,
+        comments: order_details.comments,
+      },
+      items: [...orderedProducts],
+      date: new Date(),
+      total: cartProducts.reduce(priceReducer, 0),
+    };
 
-      getFirestore()
-        .collection("orders")
-        .add(order)
-        .then((res) => {
-          dispatch(setOrder_id(res.id));
-          cartProducts.forEach((item) =>
-            getFirestore()
-              .collection("products")
-              .doc(String(item.id))
-              .update({ stock: item.stock - item.quantity })
-          );
-        })
-        .catch((error) => {
-          console.log(error);
-          return error;
-        });
+    getFirestore()
+      .collection("orders")
+      .add(order)
+      .then((res) => {
+        dispatch(setOrder_id(res.id));
+        cartProducts.forEach((item) =>
+          getFirestore()
+            .collection("products")
+            .doc(String(item.id))
+            .update({ stock: item.stock - item.quantity })
+        );
+      })
+      .catch((error) => {
+        console.log(error);
+        return error;
+      });
 
-      dispatch(fetchProducts());
-    }
+    dispatch(fetchProducts());
   };
+};
 
 export {
   addProduct,
