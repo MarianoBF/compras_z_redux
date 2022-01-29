@@ -1,14 +1,14 @@
 # Description
 A store using [React Bootstrap](https://react-bootstrap.github.io/) for the UI.
 
-The shopping cart is persisted in local storage and the order confirmed by email using emailJS.
+The shopping cart is persisted in local storage and state is managed with Redux.
 
 Authentication through [Google Firebase](https://firebase.google.com/).  
 
 # Descripción
 Un sitio de compras, utilizando [React Bootstrap](https://react-bootstrap.github.io/) para la interfaz.
 
-Persiste carro de compras en local storage y se envía confirmación de la orden por email usando emailJS.
+Persiste carro de compras en local storage y gestiona estado con Redux.
 
 Autoriza al usuario vía [Google Firebase](https://firebase.google.com/).  
 
@@ -18,4 +18,4 @@ Autoriza al usuario vía [Google Firebase](https://firebase.google.com/).
 1. `npm start`
 
 # Live at / Montado en:
-https://compras-z.netlify.app
+
