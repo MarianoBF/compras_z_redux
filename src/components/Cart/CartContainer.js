@@ -65,7 +65,6 @@ export default function CartContainer({ user }) {
     setCheckingStock(true);
     dispatch(checkStock());
     setTimeout(() => {
-      console.log("stock", stock)
       if (stock === "OK") {
         setShowForm(true);
         setCheckingStock(false);
@@ -74,7 +73,7 @@ export default function CartContainer({ user }) {
         setStockError(true);
         setStockErrorMessage(stock);
       }
-    }, 5000);
+    }, 3000);
   };
 
   const handleReturn = () => {

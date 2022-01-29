@@ -23,21 +23,21 @@ export default function ItemListContainer({ email }) {
             return { id: item.id, details: item.data() };
           })
         );
-        if (placedOrders.length > 0 && isMounted) {
-          setNoOrders(false);
-          setOrderList(
-            placedOrders.filter((item) => item.details.buyer.email === email)
-          );
-          setIsLoading(false);
-        } else {
-          setIsLoading(false);
-          setNoOrders(true);
-        }
-      })
+          if (placedOrders.length > 0 && isMounted) {
+            setNoOrders(false);
+            setOrderList(
+              placedOrders.filter((item) => item.details.buyer.email === email)
+            );
+            setIsLoading(false);
+          } else {
+            setIsLoading(false);
+            setNoOrders(true);
+          }
+        })
       .catch((error) => console.log(error));
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [email, isMounted]);
+  }, [email, isMounted, isLoading]);
 
   if (!email) {
     return (

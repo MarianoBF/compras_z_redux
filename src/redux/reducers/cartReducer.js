@@ -59,7 +59,7 @@ const cartReducer = (state = initialState, action) => {
         cartProducts: [...decreasedProds],
       };
     case "CLEAR_PRODUCTS":
-      return { ...state, cartProducts: [] };
+      return { ...state, cartProducts: [], stock_checked: "No", order_id: "" };
     case "SAVE_ORDER_ID":
       return { ...state, order_id: action.payload.order_id };
     case "UPDATE_STOCK_CHECK":
