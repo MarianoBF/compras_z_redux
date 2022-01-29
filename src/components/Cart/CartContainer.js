@@ -16,6 +16,8 @@ export default function CartContainer({ user }) {
   const [checkingStock, setCheckingStock] = useState(false);
   const [stockError, setStockError] = useState(false);
   const [stockErrorMessage, setStockErrorMessage] = useState([]);
+  const stock = useSelector((state) => state.cart.stock_checked);
+
   const [disable, setDisable] = useState(false);
 
   const productsToShow = useSelector((state) => state.cart.cartProducts);
@@ -57,12 +59,12 @@ export default function CartContainer({ user }) {
     history.push("/");
   };
 
+
   const handleShowForm = () => {
     setDisable(false);
     setStockError(false);
     setCheckingStock(true);
     setTimeout(() => {
-      const stock = "OK"
       if (stock === "OK") {
         setShowForm(true);
         setCheckingStock(false);

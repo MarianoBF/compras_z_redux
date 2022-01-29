@@ -1,10 +1,9 @@
-import { getFirestore } from "../../firebase";
-
 const initialState = {
   allProducts: [],
   cartProducts: [],
   order: {},
   order_id: "",
+  stock_checked: "No",
 };
 
 const cartReducer = (state = initialState, action) => {
@@ -61,101 +60,10 @@ const cartReducer = (state = initialState, action) => {
       };
     case "CLEAR_PRODUCTS":
       return { ...state, cartProducts: [] };
-    case "CREATE_ORDER":
-      let order_id;
-      let stockError = [];
-      state.cartProducts.forEach((item) => {
-        const filtered = state.allProducts.filter(
-          (all) => all.id === item.id
-        )[0];
-        const alreadyAccountedFor = stockError.filter(
-          (errorItem) => errorItem.id === item.id
-        );
-        if (alreadyAccountedFor.length === 0) {
-          const othersInCart = state.cartProducts.filter(
-            (cartItem) => cartItem.id === item.id
-          );
-          if (othersInCart.length > 1) {
-            const totalQuantity = othersInCart.reduce(
-              (acc, curr) => acc + curr.quantity,
-              0
-            );
-            if (filtered.stock < totalQuantity) {
-              stockError.push({
-                id: item.id,
-                name: item.name,
-                stock: filtered.stock,
-                type: "tooMuch",
-              });
-            } else if (totalQuantity < 1) {
-              stockError.push({
-                id: item.id,
-                name: item.name,
-                stock: filtered.stock,
-                type: "tooFew",
-              });
-            }
-          } else {
-            if (filtered.stock < item.quantity) {
-              stockError.push({
-                id: item.id,
-                name: item.name,
-                stock: filtered.stock,
-                type: "tooMuch",
-              });
-            } else if (item.quantity < 1) {
-              stockError.push({
-                id: item.id,
-                name: item.name,
-                stock: filtered.stock,
-                type: "tooFew",
-              });
-            }
-          }
-        }
-      });
-      if (stockError.length > 0) {
-        return stockError;
-      } else {
-        const priceReducer = (prev, cur) => prev + cur.quantity * cur.price;
-        const orderedProducts = state.cartProducts.map((item) => ({
-          id: item.id,
-          title: item.name,
-          price: item.price,
-          quantity: item.quantity,
-          stock: item.stock,
-        }));
-        const order = {
-          buyer: {
-            name: action.payload.order.name,
-            phone: action.payload.order.phone,
-            email: action.payload.order.email,
-            address: action.payload.order.address,
-            comments: action.payload.order.comments,
-          },
-          items: [...orderedProducts],
-          date: new Date(),
-          total: state.cartProducts.reduce(priceReducer, 0),
-        };
-
-        getFirestore()
-          .collection("orders")
-          .add(order)
-          .then((res) => {
-            order_id = res.id;
-            state.cartProducts.forEach((item) =>
-              getFirestore()
-                .collection("products")
-                .doc(String(item.id))
-                .update({ stock: item.stock - item.quantity })
-            );
-          })
-          .catch((error) => {
-            console.log(error);
-            return error;
-          });
-        return { ...state, order_id };
-      }
+    case "SAVE_ORDER_ID":
+      return { ...state, order_id: action.payload.order_id };
+    case "UPDATE_STOCK_CHECK":
+      return { ...state, stock_checked: action.payload.status };
     case "GET_INITIAL_PRODUCTS_CART":
       return {
         ...state,
