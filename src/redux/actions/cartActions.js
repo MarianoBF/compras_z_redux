@@ -1,6 +1,6 @@
 import { fetchProducts } from "./productActions";
 import { getFirestore } from "../../firebase";
-import store from "../store";
+import { store } from "../store";
 
 function addProduct(quantity, id) {
   return {
