@@ -21,7 +21,7 @@ function App() {
   useEffect(() => {
     dispatch(fetchProducts());
     dispatch(fetchCategories());
-    const userData = JSON.parse(localStorage.getItem("compras_z_user"));
+    const userData = JSON.parse(localStorage.getItem("compras_z_redux_user"));
     if (userData && userData.time > Date.now() - 1000 * 60 * 60) {
       setUser(userData);
     }
@@ -37,7 +37,7 @@ function App() {
           time: Date.now(),
         });
         localStorage.setItem(
-          "compras_z_user",
+          "compras_z_redux_user",
           JSON.stringify({
             name: loginData.displayName,
             email: loginData.email,
